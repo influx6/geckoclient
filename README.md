@@ -21,18 +21,18 @@ Create new dataset.
 
 ```go
 client.Create(context.Background(), "sales.gross", geckoclient.NewDataset{
-      UniqueBy: []string{""},
-			Fields: map[string]geckoclient.DataType{
-				"name": geckoclient.StringType{
-					Name: "transaction_target",
-				},
-				"amount": geckoclient.NumberType{
-					Name: "transaction_amount",
-				},
-				"date": geckoclient.DateType{
-					Name: "transaction_date",
-				},
-			},
+	UniqueBy: []string{"date"},
+	Fields: map[string]geckoclient.DataType{
+		"name": geckoclient.StringType{
+			Name: "transaction_target",
+		},
+		"amount": geckoclient.NumberType{
+			Name: "transaction_amount",
+		},
+		"date": geckoclient.DateType{
+			Name: "transaction_date",
+		},
+	},
 })
 ```
 
@@ -62,24 +62,24 @@ Replace all data in the dataset.
 
 ```go
 client.ReplaceData(context.Background(), "sales.gross", geckoclient.Dataset{
-			Data: []map[string]interface{}{
-				{
-					"amount": 300,
-					"name":   "Waxon Butter",
-					"date":   now.Format(isoTime),
-				},
-				{
-					"amount": 1300,
-					"name":   "Shred Lack",
-					"date":   now.Add(time.Hour * 30).Format(isoTime),
-				},
-				{
-					"amount": 500,
-					"name":   "Creg Washer",
-					"date":   now.Add(time.Hour * 10).Format(isoTime),
-				},
-			},
-		})
+	Data: []map[string]interface{}{
+		{
+			"amount": 300,
+			"name":   "Waxon Butter",
+			"date":   now.Format(isoTime),
+		},
+		{
+			"amount": 1300,
+			"name":   "Shred Lack",
+			"date":   now.Add(time.Hour * 30).Format(isoTime),
+		},
+		{
+			"amount": 500,
+			"name":   "Creg Washer",
+			"date":   now.Add(time.Hour * 10).Format(isoTime),
+		},
+	},
+})
 ```
 
 ### Post
@@ -88,25 +88,25 @@ Append data to a dataset.
 
 ```go
 client.PushData(context.Background(), "sales.gross", geckoclient.Dataset{
-      DeleteBy: []string{"name"},
-			Data: []map[string]interface{}{
-				{
-					"amount": 300,
-					"name":   "Waxon Butter",
-					"date":   now.Format(isoTime),
-				},
-				{
-					"amount": 1300,
-					"name":   "Shred Lack",
-					"date":   now.Add(time.Hour * 30).Format(isoTime),
-				},
-				{
-					"amount": 500,
-					"name":   "Creg Washer",
-					"date":   now.Add(time.Hour * 10).Format(isoTime),
-				},
-			},
-		})
+	DeleteBy: []string{"name"},
+	Data: []map[string]interface{}{
+		{
+			"amount": 300,
+			"name":   "Waxon Butter",
+			"date":   now.Format(isoTime),
+		},
+		{
+			"amount": 1300,
+			"name":   "Shred Lack",
+			"date":   now.Add(time.Hour * 30).Format(isoTime),
+		},
+		{
+			"amount": 500,
+			"name":   "Creg Washer",
+			"date":   now.Add(time.Hour * 10).Format(isoTime),
+		},
+	},
+})
 ```
 
 `delete_by` is an optional field by which to order the truncation of records once the maximum record count has been reached. By default the oldest records (by insertion time) will be removed.
