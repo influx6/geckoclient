@@ -9,12 +9,13 @@ import (
 	"io"
 	"net/http"
 	"strings"
+	"time"
 )
 
 var (
 	api     = "https://api.geckoboard.com"
 	hclient = &http.Client{
-	//Timeout: time.Second * 30,
+		Timeout: time.Second * 30,
 	}
 )
 
