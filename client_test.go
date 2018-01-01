@@ -12,7 +12,7 @@ import (
 
 var (
 	now     = time.Now()
-	isoTime = "2016-01-01T12:00:00Z"
+	isoTime = "2016-01-01"
 	apiAuth = os.Getenv("GECKOBOARD_TEST_API_KEY")
 )
 
@@ -117,7 +117,7 @@ func testDatasetReplaceData(t *testing.T, client geckoclient.Client) {
 func testDatasetDelete(t *testing.T, client geckoclient.Client) {
 	tests.Header("When deleting a new dataset")
 	{
-		err := client.Delete(context.Background(), "decking")
+		err := client.Delete(context.Background(), "sales.gross")
 		if err != nil {
 			tests.FailedWithError(err, "Should have successfully deleted new dataset")
 		}

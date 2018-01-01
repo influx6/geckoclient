@@ -49,12 +49,16 @@ type Dataset struct {
 // APIError embodies the data received from the GeckoBoard API when
 // a request returns an associated error response.
 type APIError struct {
-	Message string `json:"message"`
+	Err     error
+	Message string
 }
 
 // Error returns associated error associated with the instance.
 func (a APIError) Error() string {
-	return a.Message
+	if a.Message == "" {
+		return a.Err.Error()
+	}
+	return a.Message + " : " + a.Err.Error()
 }
 
 // Client embodies a http client for interacting with the GeckoBoard API.
@@ -197,7 +201,10 @@ func (gc Client) doRequest(ctx context.Context, method string, path string, body
 	}
 
 	req.SetBasicAuth(gc.auth, "")
-	req.Header.Set("Content-Type", "application/json")
+
+	if body != nil {
+		req.Header.Set("Content-Type", "application/json")
+	}
 
 	if gc.agent != "" {
 		req.Header.Set("User-Agent", gc.agent)
@@ -212,35 +219,39 @@ func (gc Client) doRequest(ctx context.Context, method string, path string, body
 		return res.Body, nil
 	}
 
-	if res.StatusCode >= 400 {
-		if res.StatusCode == http.StatusConflict {
-			return nil, ErrRequestConflict
-		}
-
-		if res.StatusCode == http.StatusBadRequest {
-			return nil, ErrInvalidRequest
-		}
-
-		if res.StatusCode == http.StatusUnauthorized {
-			return nil, ErrBadCredentials
-		}
-
-		return nil, ErrFailedRequest
-	}
-
-	if !strings.Contains(res.Header.Get("Content-Type"), "application/json") {
-		return nil, ErrInvalidResponseType
-	}
-
 	defer res.Body.Close()
 
 	var recErr = struct {
 		Error APIError `json:"error"`
 	}{}
 
-	if err := json.NewDecoder(res.Body).Decode(&recErr); err != nil {
-		return nil, ErrFailedRequest
+	if !strings.Contains(res.Header.Get("Content-Type"), "application/json") {
+		recErr.Error.Err = ErrInvalidResponseType
+		return nil, recErr.Error
 	}
 
+	if err := json.NewDecoder(res.Body).Decode(&recErr); err != nil {
+		recErr.Error.Err = err
+		return nil, recErr.Error
+	}
+
+	if res.StatusCode >= 400 {
+		if res.StatusCode == http.StatusConflict {
+			recErr.Error.Err = ErrRequestConflict
+			return nil, recErr.Error
+		}
+
+		if res.StatusCode == http.StatusBadRequest {
+			recErr.Error.Err = ErrFailedRequest
+			return nil, recErr.Error
+		}
+
+		if res.StatusCode == http.StatusUnauthorized {
+			recErr.Error.Err = ErrBadCredentials
+			return nil, recErr.Error
+		}
+	}
+
+	recErr.Error.Err = ErrInvalidRequest
 	return nil, recErr.Error
 }
