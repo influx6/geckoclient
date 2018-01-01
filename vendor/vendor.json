@@ -1,0 +1,13 @@
+{
+	"comment": "",
+	"ignore": "test",
+	"package": [
+		{
+			"checksumSHA1": "/PE0RGwoNeVkhlVKWxnIt0TgAA4=",
+			"path": "github.com/influx6/faux/tests",
+			"revision": "5d7d63b4696c39d09ccc14eb4ce4b5db25e9d662",
+			"revisionTime": "2017-12-31T10:49:33Z"
+		}
+	],
+	"rootPath": "github.com/geckoboard/geckoclient"
+}

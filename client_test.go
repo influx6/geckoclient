@@ -54,61 +54,67 @@ func testDatasetCreate(t *testing.T, client geckoclient.Client) {
 }
 
 func testDatasetPushData(t *testing.T, client geckoclient.Client) {
-	err := client.PushData(context.Background(), "decking", geckoclient.Dataset{
-		Data: []map[string]interface{}{
-			{
-				"amount": 300,
-				"name":   "Waxon Butter",
-				"date":   now.Format(isoTime),
+	tests.Header("When pushing data in a dataset")
+	{
+		err := client.PushData(context.Background(), "decking", geckoclient.Dataset{
+			Data: []map[string]interface{}{
+				{
+					"amount": 300,
+					"name":   "Waxon Butter",
+					"date":   now.Format(isoTime),
+				},
+				{
+					"amount": 1300,
+					"name":   "Shred Lack",
+					"date":   now.Add(time.Hour * 30).Format(isoTime),
+				},
+				{
+					"amount": 500,
+					"name":   "Creg Washer",
+					"date":   now.Add(time.Hour * 10).Format(isoTime),
+				},
 			},
-			{
-				"amount": 1300,
-				"name":   "Shred Lack",
-				"date":   now.Add(time.Hour * 30).Format(isoTime),
-			},
-			{
-				"amount": 500,
-				"name":   "Creg Washer",
-				"date":   now.Add(time.Hour * 10).Format(isoTime),
-			},
-		},
-	})
+		})
 
-	if err != nil {
-		tests.FailedWithError(err, "Should have successfully created new dataset")
+		if err != nil {
+			tests.FailedWithError(err, "Should have successfully created new dataset")
+		}
+		tests.Passed("Should have successfully created new dataset")
 	}
-	tests.Passed("Should have successfully created new dataset")
 }
 
 func testDatasetReplaceData(t *testing.T, client geckoclient.Client) {
-	err := client.ReplaceData(context.Background(), "decking", geckoclient.Dataset{
-		Data: []map[string]interface{}{
-			{
-				"amount": 300,
-				"name":   "Waxon Rutter",
-				"date":   time.Now().Format(isoTime),
+	tests.Header("When replacing data in a dataset")
+	{
+		err := client.ReplaceData(context.Background(), "decking", geckoclient.Dataset{
+			Data: []map[string]interface{}{
+				{
+					"amount": 300,
+					"name":   "Waxon Rutter",
+					"date":   time.Now().Format(isoTime),
+				},
+				{
+					"amount": 1300,
+					"name":   "Shred Hack",
+					"date":   now.Add(time.Hour * 10).Format(isoTime),
+				},
+				{
+					"amount": 500,
+					"name":   "Creg Washer",
+					"date":   now.Add(time.Hour * 50).Format(isoTime),
+				},
 			},
-			{
-				"amount": 1300,
-				"name":   "Shred Hack",
-				"date":   now.Add(time.Hour * 10).Format(isoTime),
-			},
-			{
-				"amount": 500,
-				"name":   "Creg Washer",
-				"date":   now.Add(time.Hour * 50).Format(isoTime),
-			},
-		},
-	})
+		})
 
-	if err != nil {
-		tests.FailedWithError(err, "Should have successfully created new dataset")
+		if err != nil {
+			tests.FailedWithError(err, "Should have successfully created new dataset")
+		}
+		tests.Passed("Should have successfully created new dataset")
 	}
-	tests.Passed("Should have successfully created new dataset")
 }
 
 func testDatasetDelete(t *testing.T, client geckoclient.Client) {
-	tests.Header("When creating a new dataset")
+	tests.Header("When deleting a new dataset")
 	{
 		err := client.Delete(context.Background(), "decking")
 		if err != nil {
