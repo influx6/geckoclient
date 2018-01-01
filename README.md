@@ -7,6 +7,14 @@ Go/Golang client library for Geckoboard API (https://developer.geckoboard.com/ap
 go get github.com/influx6/geckoclient
 ```
 
+## Tests
+
+To run tests you need to provided a test client API Authentication key as an environment variable `GECKOBOARD_TEST_API_KEY`.
+
+```bash
+GECKOBOARD_TEST_API_KEY=_222efc82e7933138077b1c2554439e15 go test -v
+```
+
 ### Create new client
 
 New Client verifies API Key to ensure user has valid API auth.
@@ -36,7 +44,7 @@ client.Create(context.Background(), "sales.gross", geckoclient.NewDataset{
 })
 ```
 
-`unique_by` is an optional array of one or more field names whose values will be unique across all your records.
+`UniqueBy` is an optional array of one or more field names whose values will be unique across all your records.
 
 Available field types:
 
@@ -109,7 +117,7 @@ client.PushData(context.Background(), "sales.gross", geckoclient.Dataset{
 })
 ```
 
-`delete_by` is an optional field by which to order the truncation of records once the maximum record count has been reached. By default the oldest records (by insertion time) will be removed.
+`DeleteBy` is an optional field by which to order the truncation of records once the maximum record count has been reached. By default the oldest records (by insertion time) will be removed.
 
 ## Vendoring
 
