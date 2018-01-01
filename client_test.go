@@ -117,7 +117,7 @@ func testDatasetReplaceData(t *testing.T, client geckoclient.Client) {
 func testDatasetDelete(t *testing.T, client geckoclient.Client) {
 	tests.Header("When deleting a new dataset")
 	{
-		err := client.Delete(context.Background(), "sales.gross")
+		err := client.Delete(context.Background(), "decking")
 		if err != nil {
 			tests.FailedWithError(err, "Should have successfully deleted new dataset")
 		}

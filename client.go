@@ -20,10 +20,10 @@ var (
 
 // errors ...
 var (
-	ErrInvalidRequest      = errors.New("request is invalid: api respond as bad request")
 	ErrRequestConflict     = errors.New("request encountered resource conflict")
-	ErrFailedRequest       = errors.New("request failed: unknown status response")
+	ErrInvalidRequest      = errors.New("request failed: unknown status response")
 	ErrBadCredentials      = errors.New("request denied due to bad auth crendentials")
+	ErrFailedRequest       = errors.New("request is invalid: api respond as bad request")
 	ErrInvalidResponseType = errors.New("invalid response type, expected 'application/json'")
 )
 
@@ -141,7 +141,7 @@ func (gc Client) PushData(ctx context.Context, datasetID string, data Dataset) e
 // DELETE https://api.geckoboard.com/datasets/:datasetid
 //
 func (gc Client) Delete(ctx context.Context, datasetID string) error {
-	res, err := gc.doRequest(ctx, "PUT", fmt.Sprintf("datasets/%s", datasetID), nil)
+	res, err := gc.doRequest(ctx, "DELETE", fmt.Sprintf("datasets/%s", datasetID), nil)
 	if err != nil {
 		return err
 	}
