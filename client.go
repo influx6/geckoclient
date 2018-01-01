@@ -9,19 +9,18 @@ import (
 	"io"
 	"net/http"
 	"strings"
-	"time"
 )
 
 var (
 	api     = "https://api.geckoboard.com"
 	hclient = &http.Client{
-		Timeout: time.Second * 5,
+	//Timeout: time.Second * 30,
 	}
 )
 
 // errors ...
 var (
-	ErrInvalidRequest      = errors.New("request is invalid")
+	ErrInvalidRequest      = errors.New("request is invalid: api respond as bad request")
 	ErrRequestConflict     = errors.New("request encountered resource conflict")
 	ErrFailedRequest       = errors.New("request failed: unknown status response")
 	ErrBadCredentials      = errors.New("request denied due to bad auth crendentials")
@@ -156,7 +155,9 @@ func (gc Client) Create(ctx context.Context, datasetID string, set NewDataset) e
 	newData := struct {
 		Fields   map[string]interface{} `json:"fields"`
 		UniqueBy []string               `json:"unique_by,omitempty"`
-	}{}
+	}{
+		Fields: map[string]interface{}{},
+	}
 
 	newData.UniqueBy = set.UniqueBy
 	for name, field := range set.Fields {
@@ -204,7 +205,7 @@ func (gc Client) doRequest(ctx context.Context, method string, path string, body
 
 	res, err := hclient.Do(req)
 	if err != nil {
-		return res.Body, nil
+		return nil, err
 	}
 
 	if res.StatusCode >= 200 && res.StatusCode < 300 {

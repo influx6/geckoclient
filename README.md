@@ -12,7 +12,7 @@ go get github.com/influx6/geckoclient
 To run tests you need to provided a test client API Authentication key as an environment variable `GECKOBOARD_TEST_API_KEY`.
 
 ```bash
-GECKOBOARD_TEST_API_KEY=_222efc82e7933138077b1c2554439e15 go test -v
+GECKOBOARD_TEST_API_KEY=222efc82e7933138077b1c2554439e15 go test -v
 ```
 
 ### Create new client

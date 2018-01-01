@@ -17,6 +17,7 @@ var (
 )
 
 func TestGeckoClient(t *testing.T) {
+	tests.Info("Running tests with APIKey %+q", apiAuth)
 	client, err := geckoclient.New(apiAuth)
 	if err != nil {
 		tests.FailedWithError(err, "Should have successfully created new geckoboard api client")
@@ -77,9 +78,9 @@ func testDatasetPushData(t *testing.T, client geckoclient.Client) {
 		})
 
 		if err != nil {
-			tests.FailedWithError(err, "Should have successfully created new dataset")
+			tests.FailedWithError(err, "Should have successfully added new data to dataset")
 		}
-		tests.Passed("Should have successfully created new dataset")
+		tests.Passed("Should have successfully added new data to dataset")
 	}
 }
 
@@ -107,9 +108,9 @@ func testDatasetReplaceData(t *testing.T, client geckoclient.Client) {
 		})
 
 		if err != nil {
-			tests.FailedWithError(err, "Should have successfully created new dataset")
+			tests.FailedWithError(err, "Should have successfully replaced old data with new data in dataset")
 		}
-		tests.Passed("Should have successfully created new dataset")
+		tests.Passed("Should have successfully replaced old data with new data in dataset")
 	}
 }
 
@@ -118,8 +119,8 @@ func testDatasetDelete(t *testing.T, client geckoclient.Client) {
 	{
 		err := client.Delete(context.Background(), "decking")
 		if err != nil {
-			tests.FailedWithError(err, "Should have successfully created new dataset")
+			tests.FailedWithError(err, "Should have successfully deleted new dataset")
 		}
-		tests.Passed("Should have successfully created new dataset")
+		tests.Passed("Should have successfully deleted new dataset")
 	}
 }
