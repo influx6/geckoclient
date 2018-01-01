@@ -1,0 +1,13 @@
+language: go
+
+go:
+  - 1.5
+  - 1.6
+  - 1.8
+  - 1.9
+
+before_install:
+after_install:
+before_script:
+after_script:
+script:
