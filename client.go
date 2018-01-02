@@ -26,6 +26,7 @@ var (
 	ErrBadCredentials      = errors.New("request denied due to bad auth crendentials")
 	ErrFailedRequest       = errors.New("request is invalid: api respond as bad request")
 	ErrInvalidResponseType = errors.New("invalid response type, expected 'application/json'")
+	ErrExceededPushLimit   = errors.New("api user has exceeded POST/PUSH limit, please wait a while")
 )
 
 // NewDataset embodies the data sent as json to create a new
@@ -237,6 +238,11 @@ func (gc Client) doRequest(ctx context.Context, method string, path string, body
 	}
 
 	if res.StatusCode >= 400 {
+		if res.StatusCode == 429 {
+			recErr.Error.Err = ErrExceededPushLimit
+			return nil, recErr.Error
+		}
+
 		if res.StatusCode == http.StatusConflict {
 			recErr.Error.Err = ErrRequestConflict
 			return nil, recErr.Error
